@@ -2,7 +2,7 @@
 # Check-build for proj.4
 . /etc/profile.d/modules.sh
 module add ci
-cd ${WORKSPACE}/${NAME}-${VERSION}/build-${BUILD_NUMBER}
+cd ${WORKSPACE}/${NAME}-${VERSION}/
 make check
 
 echo $?
