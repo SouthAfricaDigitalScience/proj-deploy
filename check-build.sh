@@ -4,7 +4,7 @@
 module add ci
 module add cmake
 cd ${WORKSPACE}/${NAME}-${VERSION}/build-${BUILD_NUMBER}
-make check
+make test
 
 echo $?
 
