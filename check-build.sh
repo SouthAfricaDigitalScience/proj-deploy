@@ -2,7 +2,8 @@
 # Check-build for proj.4
 . /etc/profile.d/modules.sh
 module add ci
-cd ${WORKSPACE}/${NAME}-${VERSION}/
+module add cmake
+cd ${WORKSPACE}/${NAME}-${VERSION}/build-${BUILD_NUMBER}
 make check
 
 echo $?
@@ -22,11 +23,12 @@ proc ModulesHelp { } {
 
 module-whatis   "$NAME $VERSION."
 setenv       PROJ4_VERSION       $VERSION
-setenv       PROJ4_DIR           /apprepo/$::env(SITE)/$::env(OS)/$::env(ARCH)/$NAME/$VERSION
+setenv       PROJ4_DIR           /data/ci-build/$::env(SITE)/$::env(OS)/$::env(ARCH)/$NAME/$VERSION
 prepend-path LD_LIBRARY_PATH     $::env(PROJ4_DIR)/lib
 prepend-path PATH                $::env(PROJ4_DIR)/bin
-prepend-path CFLAGS            "-I${PROJ4_DIR}/include"
-prepend-path LDFLAGS           "-L${PROJ4_DIR}/lib"
+prepend-path CFLAGS            "-I$::env(PROJ4_DIR/include"
+prepend-path CPPFLAGS            "-I$::env(PROJ4_DIR/include"
+prepend-path LDFLAGS           "-L$(PROJ4_DIR)/lib"
 MODULE_FILE
 ) > modules/$VERSION
 

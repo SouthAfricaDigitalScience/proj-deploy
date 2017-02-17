@@ -5,12 +5,16 @@
 . /etc/profile.d/modules.sh
 echo ${SOFT_DIR}
 module add deploy
+module  add cmake
 echo ${SOFT_DIR}
-cd ${WORKSPACE}/${NAME}-${VERSION}/
+cd ${WORKSPACE}/${NAME}-${VERSION}/build-${BUILD_NUMBER}
 echo "All tests have passed, will now build into ${SOFT_DIR}"
-make distclean
-./configure --prefix=${SOFT_DIR}
-make install -j2
+rm -rf
+cmake  ../ \
+-G"Unix Makefiles" \
+-DCMAKE_INSTALL_PREFIX="${SOFT_DIR}"
+make install
+
 echo "Creating the modules file directory ${LIBRARIES_MODULES}"
 mkdir -p ${LIBRARIES_MODULES}/${NAME}
 (
@@ -32,3 +36,8 @@ prepend-path CFLAGS            "-I${PROJ4_DIR}/include"
 prepend-path LDFLAGS           "-L${PROJ4_DIR}/lib"
 MODULE_FILE
 ) > ${LIBRARIES_MODULES}/${NAME}/${VERSION}
+
+module avail ${NAME}
+module add ${NAME}/${VERSION}
+
+which proj

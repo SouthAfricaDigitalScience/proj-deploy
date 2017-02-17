@@ -2,7 +2,8 @@
 . /etc/profile.d/modules.sh
 # Build file for proj.4
 module add ci
-SOURCE_FILE=${VERSION}.tar.gz
+module add cmake
+SOURCE_FILE=${NAME}-${VERSION}.tar.gz
 
 echo "REPO_DIR is "
 echo $REPO_DIR
@@ -13,7 +14,7 @@ echo $WORKSPACE
 echo "SOFT_DIR is"
 echo $SOFT_DIR
 
-mkdir -p ${WORKSPACE}
+mkdir -p ${WORKSPACE}/${NAME}-${VERSION}/build-${BUILD_NUMBER}
 mkdir -p ${SRC_DIR}
 mkdir -p ${SOFT_DIR}
 
@@ -22,7 +23,7 @@ mkdir -p ${SOFT_DIR}
 if [ ! -e ${SRC_DIR}/${SOURCE_FILE}.lock ] && [ ! -s ${SRC_DIR}/${SOURCE_FILE} ] ; then
   touch  ${SRC_DIR}/${SOURCE_FILE}.lock
   echo "seems like this is the first build - let's geet the source"
-  wget https://github.com/OSGeo/${NAME}/archive/${VERSION}/${SOURCE_FILE} -O ${SRC_DIR}/${SOURCE_FILE}
+  wget http://download.osgeo.org/${NAME}/${SOURCE_FILE} -O ${SRC_DIR}/${SOURCE_FILE}
   echo "releasing lock"
   rm -v ${SRC_DIR}/${SOURCE_FILE}.lock
 elif [ -e ${SRC_DIR}/${SOURCE_FILE}.lock ] ; then
@@ -36,7 +37,9 @@ else
 fi
 tar xzf  ${SRC_DIR}/${SOURCE_FILE} -C ${WORKSPACE} --skip-old-files
 # We use in-source configuration because we want to be able to run the tests later.
-cd ${WORKSPACE}/${NAME}-${VERSION}
-./configure --prefix=${SOFT_DIR}
+cd ${WORKSPACE}/${NAME}-${VERSION}/build-${BUILD_NUMBER}
+cmake  ../ \
+-G"Unix Makefiles" \
+-DCMAKE_INSTALL_PREFIX="${SOFT_DIR}"
 
-make -j 2
+make
