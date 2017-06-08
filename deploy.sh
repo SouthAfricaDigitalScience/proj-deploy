@@ -15,8 +15,8 @@ cmake  ../ \
 -DCMAKE_INSTALL_PREFIX="${SOFT_DIR}"
 make install
 
-echo "Creating the modules file directory ${LIBRARIES_MODULES}"
-mkdir -p ${LIBRARIES_MODULES}/${NAME}
+echo "Creating the modules file directory ${LIBRARIES}"
+mkdir -p ${LIBRARIES}/${NAME}
 (
 cat <<MODULE_FILE
 #%Module1.0
@@ -35,7 +35,7 @@ prepend-path PATH                $::env(PROJ4_DIR)/bin
 prepend-path CFLAGS            "-I${PROJ4_DIR}/include"
 prepend-path LDFLAGS           "-L${PROJ4_DIR}/lib"
 MODULE_FILE
-) > ${LIBRARIES_MODULES}/${NAME}/${VERSION}
+) > ${LIBRARIES}/${NAME}/${VERSION}
 
 module avail ${NAME}
 module add ${NAME}/${VERSION}

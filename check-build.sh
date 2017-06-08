@@ -26,11 +26,11 @@ setenv       PROJ4_VERSION       $VERSION
 setenv       PROJ4_DIR           /data/ci-build/$::env(SITE)/$::env(OS)/$::env(ARCH)/$NAME/$VERSION
 prepend-path LD_LIBRARY_PATH     $::env(PROJ4_DIR)/lib
 prepend-path PATH                $::env(PROJ4_DIR)/bin
-prepend-path CFLAGS            "-I$::env(PROJ4_DIR/include"
-prepend-path CPPFLAGS            "-I$::env(PROJ4_DIR/include"
+prepend-path CFLAGS            "-I$::env(PROJ4_DIR)/include"
+prepend-path CPPFLAGS            "-I$::env(PROJ4_DIR)/include"
 prepend-path LDFLAGS           "-L$(PROJ4_DIR)/lib"
 MODULE_FILE
 ) > modules/$VERSION
 
-mkdir -p ${LIBRARIES_MODULES}/${NAME}
-cp modules/$VERSION ${LIBRARIES_MODULES}/${NAME}
+mkdir -p ${LIBRARIES}/${NAME}
+cp modules/$VERSION ${LIBRARIES}/${NAME}
